@@ -1,0 +1,43 @@
+<%= render "shared/errors", obj: @member %>
+
+<table class="attr">
+    <tr>
+        <th><%= form.label :user_id, "ユーザID" %></th>
+        <td><%= form.text_field :user_id, size: 8 %></td>
+    </tr>
+    <tr>
+        <th><%= form.label :name, "氏名" %></th>
+        <td><%= form.text_field :name %></td>
+    </tr>
+    <tr>
+        <th><%= form.label :address, "住所" %></th>
+        <td><%= form.text_field :address %></td>
+    </tr>
+    <tr>  
+        <th>定期便</th>
+        <td><%= form.label :regular_member, "利用しない", {value: false} %>
+            <%= form.radio_button :regular_member, false %>
+            <%= form.label :regular_member, "利用", {value: true} %>
+            <%= form.radio_button :regular_member, true%></td>
+    </tr>
+    <tr>
+        <th><%= form.label :group, "お届け日" %></th>
+        <td>
+            <% 
+                options = [
+                    ["A:月曜日", 1], ["B:水曜日", 3], ["C:金曜日", 5]
+                ] 
+            %>
+            <%= form.select :group, options %>
+        </td>
+    </tr>
+    <tr>
+        <th><%= form.label :password, "パスワード" %></th>
+        <td><%= form.text_field :password %></td>
+    </tr>
+    <tr>
+        <th><%= form.label :password_confirmation, "確認用パスワード" %></th>
+        <td><%= form.password_field :password_confirmation %></td>
+    </tr>
+    
+</table>

@@ -1,0 +1,30 @@
+<table class="attr">
+    <tr>
+        <th>ユーザID</th>
+        <td><%= @member.user_id %></td>
+    </tr>
+    <tr>
+        <th>氏名</th>
+        <td><%= @member.name %></td>
+    </tr>
+    <tr>
+        <th>住所</th>
+        <td><%= @member.address %></td>
+    </tr>
+    <tr>
+        <th>定期便</th>
+        <td><%= @member.regular_member == true ? "利用" : "利用しない" %></td>
+    </tr>
+    <tr>
+        <th>配送日</th>
+        <td>
+            <% if @member.group == 1 %>
+                A:月曜日
+            <% elsif @member.group == 3 %>
+                B:水曜日
+            <% elsif @member.group == 5 %>
+                C:金曜日
+            <% end %>
+        </td>
+    </tr>
+</table>

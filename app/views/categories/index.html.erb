@@ -1,0 +1,19 @@
+<h1>商品一覧</h1>
+<% if @categories.present? %>
+    <table class="list">
+        <thead>
+            <tr>
+                <th>カテゴリー</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @categories.each do |category| %>
+                <tr>
+                    <td><%= link_to category.category_name, [category, :items] %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+<% else %>
+    <p>カテゴリーはありません。</p>
+<% end %>

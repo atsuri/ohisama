@@ -1,0 +1,21 @@
+<% if current_member %>
+    <%= form_for [:member, @regular] do |form| %>
+        <%= render "shared/errors", obj: @regular %>
+        <p>個数が0だと頼まないと判断されます。5つまで定期便で注文可能です。</p>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>個数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% item_id = @regular.item_id%>
+                <td><%= Item.find(item_id).item_name %></td>
+                <td><%= text_field_tag :regular_quantity, @regular.regular_quantity %></td>
+            </tbody>
+        </table>
+
+        <%= form.submit "更新" %>
+    <% end %>
+<% end %>

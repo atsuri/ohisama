@@ -1,0 +1,62 @@
+<h3><%= link_to "#{Category.find(@item.category_id).category_name}", category_items_path(@item.category_id) %></h3>
+
+<%= link_to "カテゴリーへ戻る", :categories %>
+
+<% if current_member %>
+    <%= form_for [current_member, @order] do |form| %>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>金額（税込）</th>
+                    <th>在庫数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <%= form.radio_button :item_id, @item.id, checked: true %>
+                        <%= label_tag "#{@item.item_name}" %>
+                    </td>
+                    <td><%= @item.price %></td>
+                    <td><%= @item.item_quantity-1 %></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <table class="list">
+            <tr>
+                <th><%= form.label :order_quantity, "個数" %></th>
+                <td>
+                    <% 
+                        options = [
+                            ["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5]
+                        ] 
+                    %>
+                    <%= form.select :order_quantity, options %>
+                </td>
+            </tr>
+        </table>
+
+        <%= submit_tag "カートに入れる" %>
+    <% end %>
+<% else %>
+    <table class="list">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>金額（税込）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= @item.item_name %></td>
+                <td><%= @item.price %></td>
+            </tr>
+        </tbody>
+    </table>
+<% end %>
+
+
+
+

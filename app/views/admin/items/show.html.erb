@@ -1,0 +1,31 @@
+<% if current_admin %> 
+    <h3><%= link_to "#{Category.find(@item.category_id).category_name}", admin_category_items_path(@item.category_id) %></h3>
+
+    <%= link_to "カテゴリーへ戻る", [:admin, :categories] %>
+
+    <table class="list">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>金額（税込）</th>
+                <th>在庫数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= @item.item_name %></td>
+                <td><%= @item.price %></td>
+                <td><%= @item.item_quantity-1 %></td>
+            </tr>
+        </tbody>
+    </table>
+    <%= link_to "編集", [:edit, :admin, Category.find(params[:category_id]), @item] %>
+    <%= link_to "削除", [:admin, Category.find(params[:category_id]), @item], method: :delete,
+                data: { confirm: "本当に削除しますか?" } %>
+    
+    
+<% end %>
+
+
+
+

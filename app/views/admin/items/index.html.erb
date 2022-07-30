@@ -1,0 +1,46 @@
+<% if current_admin %>
+
+    <h2>カテゴリー検索</h2>
+    <%= form_tag :search_category_items, method: :get, class: "search" do %>
+        <%= text_field_tag "q", params[:q] %>
+        <%= submit_tag "検索" %>
+    <% end %>
+
+    <p><%= link_to "カテゴリーに戻る", [:admin, :categories] %></p>
+
+    <h3><%= Category.find(params[:category_id].to_i).category_name %></h3>
+    <%= link_to "商品追加", [:new, :admin, :category, :item] %>
+    <% if @items.present? %>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>金額（税込）</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @items.each do |item| %>
+                    <% if item.category_id == params[:category_id].to_i %>
+                        <% if item.disable == false %>
+                            <tr>
+                                <td><%= link_to item.item_name, admin_category_item_path(item.category_id, item.id) %></td>
+                                <td><%= item.price %></td>
+                            </tr>
+                        <% else %>
+                            <tr>
+                                <td><%= link_to item.item_name, admin_category_item_path(item.category_id, item.id)  %></td>
+                                <td><%= item.price %></td>
+                                <td>在庫なし</td>
+                            </tr>
+                        <% end %>
+
+                    <% end %>
+                <% end  %>
+
+            </tbody>
+        </table>
+        <%# <%= paginate @items %>
+    <% else %>
+        <p>商品なし</p>
+    <% end %>
+<% end %>

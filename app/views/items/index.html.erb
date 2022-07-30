@@ -1,0 +1,44 @@
+<h3><%= link_to "カテゴリー", [:categories] %></h3>
+<h4><%= Category.find(params[:category_id]).category_name %>　商品検索
+    <%= form_tag :search_category_items, method: :get, class: "search" do %>
+        <%= text_field_tag "q", params[:q] %>
+        <%= submit_tag "検索" %>
+    <% end %>
+</h4>
+
+<% if @items.present? %>
+    <table class="list">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>金額（税込）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @items.each do |item| %>
+                <% if item.category_id == params[:category_id].to_i %>
+                    <% if item.disable == false %>
+                        <tr>
+                            <% if current_member %>
+                                <td><%= link_to item.item_name, category_item_path(item.category_id, item.id) %></td>
+                            <% else %>
+                                <td><%= item.item_name %></td>
+                            <% end %>
+                            <td><%= item.price %></td>
+                        </tr>
+                    <% else %>
+                        <tr>
+                            <td><%= item.item_name %></td>
+                            <td><%= item.price %></td>
+                            <td>在庫なし</td>
+                        </tr>
+                    <% end %>
+                <% else %>
+                <% end %>
+            <% end  %>
+
+        </tbody>
+    </table>
+<% else %>
+    <p>お探しの商品は見つかりませんでした。</p>
+<% end %>

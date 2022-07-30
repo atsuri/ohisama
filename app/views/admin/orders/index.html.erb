@@ -1,0 +1,200 @@
+<% if current_admin %>
+    <h1>配達ステータス管理</h1>
+    <%= menu_link_to "グループA", admin_orders_path(group: "A") %>
+    <%= menu_link_to "グループB", admin_orders_path(group: "B") %>
+    <%= menu_link_to "グループC", admin_orders_path(group: "C") %>
+
+    <% if params[:group] == "A" || params[:group] == "B" || params[:group] == "C" %>
+        <% if params[:group] == "A" %>
+            <h2>A:月曜日</h2>
+            <% @member = Member.find_by(group: 1) %>
+            <% @order =  Order.find_by(status: 1, member_id: @member.id) %>
+            <% @status2 = Order.where(status: 2) %>
+            <% @status2.each do |member| %>
+                <% @status2 = Member.find_by(group: 1, id: member.member_id) %>
+                <% @status2 = Order.find_by(status: 2, member_id: @status2.id) if @status2 %>
+                <% if @status2 %>
+                    <% @orders2 = @status2 %>
+                    <% break %>
+                <% end %>
+            <% end %>
+            <% @status3 = Order.where(status: 3) %>
+            <% @status3.each do |member| %>
+                <% @status3 = Member.find_by(group: 1, id: member.member_id) %>
+                <% @status3 = Order.find_by(status: 3, member_id: @status3.id) if @status3 %>
+                <% if @status3 %>
+                    <% @orders3 = @status3%>
+                    <% break %>
+                <% end %>
+            <% end %>
+            <% Member.where(group: 1).each do |member| %>
+                <ul>
+                    <li><%= link_to "#{member.name}さん", admin_member_path(member) %>
+                    <%= link_to "注文履歴", admin_orders_path(order: "order", member_id: member.id) %></li>
+                </ul>
+            <% end %>
+
+        <% elsif params[:group] == "B" %>
+            <h2>B:水曜日</h2>
+            <% @member = Member.find_by(group: 3) %>
+            <% @order =  Order.find_by(status: 1, member_id: @member.id) %>
+            <% @status2 = Order.where(status: 2) %>
+            <% @status2.each do |member| %>
+                <% @status2 = Member.find_by(group: 3, id: member.member_id) %>
+                <% @status2 = Order.find_by(status: 2, member_id: @status2.id) if @status2 %>
+                <% if @status2 %>
+                    <% @orders2 = @status2 %>
+                    <% break %>
+                <% end %>
+            <% end %>
+
+            <% @status3 = Order.where(status: 3) %>
+            <% @status3.each do |member| %>
+                <% @status3 = Member.find_by(group: 3, id: member.member_id) %>
+                <% @status3 = Order.find_by(status: 3, member_id: @status3.id) if @status3 %>
+                <% if @status3 %>
+                    <% @orders3 = @status3%>
+                    <% break %>
+                <% end %>
+            <% end %>
+
+            <% Member.where(group: 3).each do |member| %>
+                <ul>
+                    <li><%= link_to "#{member.name}さん", admin_member_path(member) %>
+                    <%= link_to "注文履歴", admin_orders_path(order: "order", member_id: member.id) %></li>
+                </ul>
+            <% end %>
+
+        <% elsif params[:group] == "C" %>
+            <h2>C:金曜日</h2>
+            <% @member = Member.find_by(group: 5) %>
+            <% @order =  Order.find_by(status: 1, member_id: @member.id) %>
+            <% @status2 = Order.where(status: 2) %>
+            <% @status2.each do |member| %>
+                <% @status2 = Member.find_by(group: 5, id: member.member_id) %>
+                <% @status2 = Order.find_by(status: 2, member_id: @status2.id) if @status2 %>
+                <% if @status2 %>
+                    <% @orders2 = @status2 %>
+                    <% break %>
+                <% end %>
+            <% end %>
+            <% @status3 = Order.where(status: 3) %>
+            <% @status3.each do |member| %>
+                <% @status3 = Member.find_by(group: 5, id: member.member_id) %>
+                <% @status3 = Order.find_by(status: 3, member_id: @status3.id) if @status3 %>
+                <% if @status3 %>
+                    <% @orders3 = @status3%>
+                    <% break %>
+                <% end %>
+            <% end %>
+
+            <% Member.where(group: 5).each do |member| %>
+                <ul>
+                    <li><%= link_to "#{member.name}さん", admin_member_path(member) %>
+                    <%= link_to "注文履歴", admin_orders_path(order: "order", member_id: member.id) %></li>
+                </ul>
+            <% end %>
+
+        <% end %>
+        
+        <% if @order.present? %>
+            <%= form_for [:admin, @member, @order], method: :patch do |form| %>
+                <% 
+                    options = [
+                        ["1:注文済み → 2:発送準備中", 2]
+                    ] 
+                %>
+                <%# ["1:注文済み", 1],,["3:発送中", 3],["4:発送完了", 4] %>
+                <%= form.select :status, options %>
+                <%= form.submit "変更する"%>
+            <% end %>
+        <% else%>
+            <p>statusが1の会員はいません</p>
+            <%# エラー↑ %>
+        <% end %>
+        <% if @orders2.present? %>
+            <%= form_for [:admin, @member, @orders2], method: :patch do |form| %>
+                <% 
+                    options = [
+                        ["2:発送準備中 → 3:発送中", 3]
+                    ] 
+                %>
+                <%# ["1:注文済み", 1],,["3:発送中", 3],["4:発送完了", 4] %>
+                <%= form.select :status, options %>
+                <%= form.submit "変更する"%>
+            <% end %>
+        <% else%>
+            <p>statusが2の会員はいません</p>
+        <% end %>
+        <% if @orders3.present? %>
+            <%= form_for [:admin, @member, @orders3], method: :patch do |form| %>
+                <% 
+                    options = [
+                        ["3:発送中 → 4:発送完了", 4]
+                    ] 
+                %>
+                <%# ["1:注文済み", 1],,["3:発送中", 3],["4:発送完了", 4] %>
+                <%= form.select :status, options %>
+                <%= form.submit "変更する"%>
+            <% end %>
+        <% else%>
+            <p>statusが3の会員はいません</p>
+        <% end %>
+
+    
+    <% elsif params[:order] == "order" %>
+        <h2>注文履歴</h2>
+        <% @order = Order.where(member_id: params[:member_id].to_i) %>
+
+        <% if @order.present? %>
+            <% Order.where(member_id: params[:member_id].to_i).each do |orderid| %>
+                <% sum = 0 %>
+                <% status = Order.find(orderid.id).status %>
+                <% if status != 1 %>
+                    <% if OrderItem.where(order_id: orderid.id).present? %>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>商品名</th>
+                                    <th>個数</th>
+                                    <th>金額（税込）</th>
+                                <tr>
+                            </thead>
+                            <% OrderItem.where(order_id: orderid.id).each do |order| %>
+                                <tbody>
+                                    <tr>
+                                        <% karamu = OrderItem.find(order.id) %>
+                                        <% item = Item.find(order.item_id) %>
+                                        <td><%= order.orderitem_name %></td>
+                                        <td><%= order.orderitem_quantity %></td>
+                                        <td><%= order.orderitem_price * order.orderitem_quantity %></td>
+                                        <% sum += order.orderitem_price * order.orderitem_quantity %>   
+                                        <% if order.orderitem_regular %>
+                                            <td>定期便</td>
+                                        <% end %>
+                                    </tr>
+                                </tbody>
+                            <% end %>
+                        </table> 
+                        <h3>合計金額　<%= sum %></h3>
+                        <h4>注文日時　<%= orderid.updated_at %></h4>
+                        <% if orderid.status == 1 %>
+                            <h4>ステータス1:注文済み（カート）</h4>
+                        <% elsif orderid.status == 2 %>
+                            <h4>ステータス2:発送準備中</h4>
+                        <% elsif orderid.status == 3 %>
+                            <h4>ステータス3:発送中</h4>
+                        <% elsif orderid.status == 4 %>
+                            <h4>ステータス4:発送完了</h4>
+                        <% end %>
+
+                        <h1>ーーーーーーーーーー</h1>
+                    <% end %>
+                <% else %>
+                    <p>注文履歴は以上です。</p>
+                <% end %>
+            <% end %>
+        <% end %>    
+    <% end %>
+
+<% end %>

@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    models:
+      member: 会員情報
+    attributes:
+      member:
+        name: 氏名
+        address: 住所
+        regular_member: 定期便
+        group: 配送グループ
+        current_password: 現在のパスワード
+        password: パスワード
+        password_confirmation: 新しいパスワードの確認

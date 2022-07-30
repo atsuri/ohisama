@@ -1,0 +1,10 @@
+<% if current_admin %>
+  <% page_title = "会員登録" %>
+
+  <h1><%= @page_title %></h1>
+
+  <%= form_for [:admin, @member] do |form| %>
+    <%= render "shared/member_form", form: form %>
+    <div><%= form.submit %></div>
+  <% end %>
+<% end %>

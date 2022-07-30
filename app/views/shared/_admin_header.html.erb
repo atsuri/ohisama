@@ -1,0 +1,20 @@
+<% @message = "おひさまーと☀️あどみん" %>
+<h1><%= @message %></h1>
+
+<nav class="menubar">
+    <ul>
+        <%= render "shared/admin_login_form" unless current_admin %>
+        <% if current_admin %>
+            <%= menu_link_to "ログアウト", [:admin, :session],
+                    method: :delete, data: { confirm: "ログアウトしますか？" } %>
+            <%= menu_link_to "AdminTOP", :admin_root %>
+            <%= menu_link_to "在庫管理", :admin_categories %>
+            <%= menu_link_to "会員情報一覧", :admin_members %>
+            <%= menu_link_to "定期便管理", :admin_regulars %>
+            <%= menu_link_to "配達ステータス管理", :admin_orders %>
+        <% end %>
+        <%= menu_link_to "UserTOP", :root %>
+    </ul>
+</nav>
+
+

@@ -1,0 +1,35 @@
+<% if current_admin %>
+    <%= render "shared/errors", obj: @item %>
+    <h3><%= link_to "#{Category.find(params[:category_id]).category_name}", [:admin, :categories] %></h3>
+
+    <%= form_for [:admin, :category, @item] do |form| %>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>カテゴリー</th>
+                    <th>商品名</th>
+                    <th>金額（税込）</th>
+                    <th>個数</th>
+                    <th><%= form.label :disable, "在庫なし" %></th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>
+                    <%= form.radio_button :category_id, :category, checked: true %>
+                    <% category = Category.find(params[:category_id]) %>
+                    <%= label_tag "#{category.category_name}" %>
+                </td>
+                <td><%= text_field_tag :item_name %></td>
+                <td><%= text_field_tag :price %></td>
+                <td><%= text_field_tag :item_quantity %></td>
+
+                <td><%= check_box_tag :disable %></td>
+            </tbody>
+        </table>
+
+        <%= form.submit %>
+    <% end %>
+
+    <%= link_to "カテゴリーへ戻る", [:admin, :categories] %>
+
+<% end %>

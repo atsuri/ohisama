@@ -1,0 +1,13 @@
+<% @page_title = "マイアカウント" %>
+
+<h1><%= @page_title %></h1>
+
+<ul class="toolbar">
+    <%= menu_link_to "注文履歴", orders_path(order: "order") %>
+    <%= menu_link_to "会員登録内容変更", :edit_account %>
+    <%# <%= menu_link_to "パスワードの変更", :edit_password %>
+    <% if Member.find(current_member.id).regular_member == true %>
+        <%= menu_link_to "定期便内容", [ current_member, :regulars ] %>
+    <% end %>
+</ul>
+<%= render "members/body" %>

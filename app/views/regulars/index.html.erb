@@ -1,0 +1,21 @@
+<h2>定期便</h2>
+<table class="list">
+    <thead>
+        <tr>
+            <th>商品名</th>
+            <th>個数</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @regular.each do |regular| %>
+            <tr>
+                <% item_id = regular.item_id%>
+                <td><%= Item.find(item_id).item_name %></td>
+                <td><%= regular.regular_quantity %></td>
+                <td>
+                    <%= link_to "編集", edit_member_regular_path(current_member, regular) %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

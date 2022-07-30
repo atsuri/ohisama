@@ -1,0 +1,133 @@
+<% if current_admin %>
+
+  <% if params[:regular_item] == "regular_item" %>
+    <table class="list">
+      <thead>
+          <tr>
+              <th>定期便</th>
+              <th>個数</th>
+          </tr>
+      </thead>
+      <tbody>
+        <h3><%= @member.name %></h3>
+        <% @regular.each do |regular| %>
+          <tr>
+              <% item_id = regular.item_id%>
+              <td><%= Item.find(item_id).item_name %></td>
+              <td><%= regular.regular_quantity %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% elsif params[:regular_item] == "milk" %>
+    <% @page_title = "定期便情報-牛乳-" %>
+    <h1><%= @page_title %></h1>
+
+    <%= form_tag search_admin_regulars_path, method: :get, class: "search" do %>
+      <%= text_field_tag :keyword %>
+      <%# <%= radio_button_tag "milk", 9 %>
+      <%# <%= label_tag "牛乳" %>
+      <%# <%= radio_button_tag "egg", 10 %>
+      <%# <%= label_tag "卵" %>
+      <%= submit_tag "検索" %>
+    <% end %>
+    <%= menu_link_to "牛乳", admin_regulars_path(regular_item: "milk") %>
+    <%= menu_link_to "卵", admin_regulars_path(regular_item: "egg") %>
+    
+    <% if @members.present? %>
+      <table class="list">
+        <thead>
+          <tr>
+            <th>氏名</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @members.ids.each do |member| %>
+            <% karamu = Regular.find_by(item_id: 9, member_id: member) %>
+            <% if karamu.regular_quantity > 0 %>
+              <tr>   
+                <td><%= link_to Member.find(member).name, admin_member_regulars_path(Member.find(member), regular_item: "regular_item") %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>会員情報がありません。</p>
+    <% end %>
+
+  <% elsif params[:regular_item] == "egg" %>
+    <% @page_title = "定期便情報-卵-" %>
+    <h1><%= @page_title %></h1>
+
+    <%= form_tag search_admin_regulars_path, method: :get, class: "search" do %>
+      <%= text_field_tag :keyword %>
+      <%# <%= radio_button_tag "milk", 9 %>
+      <%# <%= label_tag "牛乳" %>
+      <%# <%= radio_button_tag "egg", 10 %>
+      <%# <%= label_tag "卵" %>
+      <%= submit_tag "検索" %>
+    <% end %>
+    <%= menu_link_to "牛乳", admin_regulars_path(regular_item: "milk") %>
+    <%= menu_link_to "卵", admin_regulars_path(regular_item: "egg") %>
+    
+    <% if @members.present? %>
+      <table class="list">
+        <thead>
+          <tr>
+            <th>氏名</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <% @members.ids.each do |member| %>
+            <% karamu = Regular.find_by(item_id: 10, member_id: member) %>
+            <% if karamu.regular_quantity > 0 %>
+              <tr>   
+                <td><%= link_to Member.find(member).name, admin_member_regulars_path(Member.find(member), regular_item: "regular_item") %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>会員情報がありません。</p>
+    <% end %>
+
+  <% else %>
+
+    <% @page_title = "定期便情報" %>
+    <h1><%= @page_title %></h1>
+
+    <%= form_tag search_admin_regulars_path, method: :get, class: "search" do %>
+      <%= text_field_tag :keyword %>
+      <%# <%= radio_button_tag "milk", 9 %>
+      <%# <%= label_tag "牛乳" %>
+      <%# <%= radio_button_tag "egg", 10 %>
+      <%# <%= label_tag "卵" %>
+      <%= submit_tag "検索" %>
+    <% end  %>
+    <%= menu_link_to "牛乳", admin_regulars_path(regular_item: "milk") %>
+    <%= menu_link_to "卵", admin_regulars_path(regular_item: "egg") %>
+    
+    
+    <% if @members.present? %>
+      <table class="list">
+        <thead>
+          <tr>
+            <th>氏名</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @members.each do |member| %>
+            <tr>   
+              <td><%= link_to member.name, admin_member_regulars_path(member, regular_item: "regular_item") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>会員情報がありません。</p>
+    <% end %>
+  <% end %>
+<% end %>

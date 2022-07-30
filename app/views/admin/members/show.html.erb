@@ -1,0 +1,12 @@
+<% if current_admin %> 
+    <% page_title = "会員の詳細" %>
+
+    <%= @page_title %>
+    <h2>会員管理</h2>
+    <%= render "body" %>
+
+    <%= link_to "アカウント編集", [:edit, :admin, @member] %>
+    <% if @member.regular_member == true %>
+        <%= link_to "定期便内容", admin_member_regulars_path(@member, regular_item: "regular_item") %>
+    <% end %>
+<% end %>

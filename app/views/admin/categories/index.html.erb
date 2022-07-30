@@ -1,0 +1,23 @@
+<% if current_admin %>
+    <h1>在庫管理</h1>
+    <% if @categories.present? %>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>カテゴリー</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @categories.each do |category| %>
+                    <tr>
+                        <td><%= link_to category.category_name, [:admin, category, :items] %></td>
+                        <%# <td><%= category.price  %>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+        <%# <%= paginate @items %>
+    <% else %>
+        <p>お探しの商品は取り扱っておりません。</p>
+    <% end %>
+<% end %>

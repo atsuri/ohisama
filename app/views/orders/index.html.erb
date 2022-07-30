@@ -1,0 +1,145 @@
+<% if current_member %>
+
+    <% if params[:cart] == "cart" %>
+        <h1>カート</h1>
+        <p>カート内の商品は、発送前日の
+            <% day = Member.find(current_member.id).group %>
+            <% if day == 1 %>
+                日曜日
+            <% elsif day == 3%>
+                火曜日
+            <% elsif day == 5%>
+                木曜日
+            <% end %>
+            に自動で確定されます。
+        </p>
+        <% @order = Order.find_by(member_id: current_member.id, status: 1) %>
+        <% sum = 0 %>
+        <% if current_member.regular_member == true %>
+            <%= link_to "定期便内容", member_regulars_path(current_member) %>
+            <% if @order.present? %>
+                <table class="list">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>個数</th>
+                            <th>金額（税込）</th>
+                            <th>取り消し</th>
+                        <tr>
+                    </thead>
+                    <% OrderItem.where(order_id: @order.id).each do |order| %>
+                        <tbody>
+                            <tr>
+                                <% item = Item.find(order.item_id) %>
+                                <td><%= item.item_name %></td>
+                                <td><%= order.orderitem_quantity %></td>
+                                <td><%= order.orderitem_price * order.orderitem_quantity %></td>
+                                <% if order.orderitem_regular %>
+                                    <td>定期便</td>
+                                <% else %>
+                                    <td><%= link_to "削除", member_order_path(current_member, order, item_id: item.id), method: :delete,
+                                        data: { confirm: "本当に削除しますか?" }  %></td>
+                                <% end %>
+
+                                <% sum = sum + order.orderitem_price * order.orderitem_quantity %>    
+                            </tr>
+                        </tbody>
+                    <% end %>
+                </table>
+                <h4>合計金額</h4>
+                <h4><%= sum %></h4>
+            <% else %>
+                <p>カートがありません</p>
+            <% end %>
+
+        <% else %>
+            <% if @order.present? %>
+                <table class="list">
+                <thead>
+                    <tr>
+                        <th>商品名</th>
+                        <th>個数</th>
+                        <th>金額（税込）</th>
+                        <th>取り消し</th>
+                    <tr>
+                </thead>
+                <% OrderItem.where(order_id: @order.id).each do |order| %>
+                    <% item = Item.find(order.item_id) %>
+                    <% if item.id == 9 && order.orderitem_regular == true || item.id == 10 && order.orderitem_regular == true%>
+                    <% else %>
+                        <tbody>
+                            <tr>
+                                <td><%= item.item_name %></td>
+                                <td><%= order.orderitem_quantity %></td>
+                                <td><%= order.orderitem_price * order.orderitem_quantity %></td>
+                                <td><%= link_to "削除", member_order_path(current_member, order, item_id: item.id), method: :delete,
+                                    data: { confirm: "本当に削除しますか?" }  %></td>
+                                
+
+                                <% sum += order.orderitem_price * order.orderitem_quantity %>    
+                            </tr>
+                        </tbody>
+                    <% end %>
+                <% end %>
+                </table>
+                <h4>合計金額</h4>
+                <%= sum %>
+            <% end %>
+        <% end %>
+        
+
+
+    <% elsif params[:order] == "order" %> 
+        <h2>注文履歴</h2>
+        <% @order = Order.where(member_id: current_member.id) %>
+
+        <% if @order.present? %>
+            <% Order.where(member_id: current_member.id).each do |orderid| %>
+            <% sum = 0 %>
+                <% if Order.find(orderid.id).status >= 2%>
+                    <% if OrderItem.where(order_id: orderid.id).present? %>
+                        <table class="list">
+                            <thead>
+                                <tr>
+                                    <th>商品名</th>
+                                    <th>個数</th>
+                                    <th>金額（税込）</th>
+                                <tr>
+                            </thead>
+                            <% OrderItem.where(order_id: orderid.id).each do |order| %>
+                                <tbody>
+                                    <tr>
+                                        <% karamu = OrderItem.find(order.id) %>
+                                        <% item = Item.find(order.item_id) %>
+                                        <td><%= order.orderitem_name %></td>
+                                        <td><%= order.orderitem_quantity %></td>
+                                        <td><%= order.orderitem_price * order.orderitem_quantity %></td>
+                                        <% sum += order.orderitem_price * order.orderitem_quantity %>   
+                                        <% if order.orderitem_regular %>
+                                            <td>定期便</td>
+                                        <% end %>
+                                    </tr>
+                                </tbody>
+                            <% end %>
+                        </table> 
+                        <h3>合計金額　<%= sum %></h3>
+                        <h4>注文日時　<%= orderid.updated_at %></h4>
+                        <% if orderid.status == 1 %>
+                            <h4>ステータス1:注文済み（カート）</h4>
+                        <% elsif orderid.status == 2 %>
+                            <h4>ステータス2:発送準備中</h4>
+                        <% elsif orderid.status == 3 %>
+                            <h4>ステータス3:発送中</h4>
+                        <% elsif orderid.status == 4 %>
+                            <h4>ステータス4:発送完了</h4>
+                        <% end %>
+
+                        <h1>ーーーーーーーーーー</h1>
+                    <% end %>
+                <% else %>
+                    <p>注文履歴は以上です。</p>
+                <% end %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>

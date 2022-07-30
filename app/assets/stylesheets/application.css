@@ -1,0 +1,97 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+body {
+    background-color: #FFFFF0;
+    color: black;
+    margin: 0; padding: 0;
+    font-family: Meiryo, sans-serif;
+}
+
+/* リンク */
+a:link { color: #58f; }
+a:visited { color: rgb(224, 72, 87); }
+a:hover { color: #f88; }
+a img { border: none; }
+
+main p {
+    font-size: 90%;
+    line-height: 1.5;
+}
+
+form#login-form input[type="text"],
+form#login-form input[type="password"] {
+    width: 120px;
+}
+
+/* 全体の枠 */
+div#container {
+    margin: 0 auto;
+    padding-top: 5px;
+    width: 600px;
+}
+
+/* ナビゲーション */
+nav ul,
+ul.toolbar,
+ul.links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li,
+div.toolbar li,
+ul.toolbar li,
+ul.links li {
+    display: inline;
+}
+
+/* メニューバー */
+nav.menubar {
+    padding: 2px;
+    background-color: #FFDBC9;
+    /* color: #000; */
+    font-size: 110%;
+    padding: 8px 16px;
+}
+
+nav.menubar ul li:not(:last-child):after {
+    color: #fff;
+    content: " | ";
+    margin: 0 20px;
+}
+
+/* メニューバーのリンク */
+nav.menubar a { text-decoration: none; }
+
+/* メニューバーのリンク（未訪問） */
+nav.menubar a:link { color: #58f; }
+
+/* メニューバーのリンク（訪問済） */
+nav.menubar a:visited { color: #58f; }
+
+/* メニューバーのリンク（マウスを合わせたとき） */
+nav.menubar a:hover {
+    color: #f88;
+    text-decoration: underline;
+}
+
+/* メニューバーのリンク（現在のページ） */
+nav.menubar span {
+    color: #555;
+    font-weight: bold;
+}

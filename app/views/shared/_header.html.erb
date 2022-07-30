@@ -1,0 +1,6 @@
+<%= if controller.kind_of?(Admin::Base) 
+        render "shared/admin_header"
+    else
+        render "shared/menubar"
+    end
+%>

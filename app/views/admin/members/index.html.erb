@@ -1,0 +1,52 @@
+<% if current_admin %>
+  <% @page_title = "会員管理" %>
+  <h1><%= @page_title %></h1>
+
+  <div class="toolbar"><%= link_to "会員の新規登録", :new_admin_member %></div>
+
+  <%= form_tag :search_admin_members, method: :get, class: "search" do %>
+    <%= text_field_tag "q", params[:q] %>
+    <%= submit_tag "検索" %>
+  <% end %>
+  <%= menu_link_to "グループA", admin_members_path(group: "A") %>
+  <%= menu_link_to "グループB", admin_members_path(group: "B") %>
+  <%= menu_link_to "グループC", admin_members_path(group: "C") %>
+
+  <% if params[:group] == "A" || params[:group] == "B" || params[:group] == "C" %>
+    <% if params[:group] == "A" %>
+      <h2>A:月曜日</h2>
+      <% @members = Member.where(group: 1) %>
+    <% elsif params[:group] == "B" %>
+      <h2>B:水曜日</h2>
+      <% @members = Member.where(group: 3) %>
+    <% elsif params[:group] == "C" %>
+      <h2>C:金曜日</h2>
+      <% @members = Member.where(group: 5) %>
+    <% end %>
+  <% end %>
+
+  <% if @members.present? %>
+    <table class="list">
+      <thead>
+        <tr>
+          <th>氏名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @members.each do |member| %>
+          <tr>
+            <td><%= link_to member.name, [:admin, member] %></td>
+            <td>
+              <%= link_to "編集", [:edit, :admin, member] %> |
+              <%= link_to "削除", [:admin, member], method: :delete,
+                data: { confirm: "本当に削除しますか?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>会員情報がありません。</p>
+  <% end %>
+<% end %>
+
